@@ -1,7 +1,7 @@
 <input
   placeholder="Search Songs"
-  [(ngModel)]="searchText"
-  (ngModelChange)="searchSongs($event)"
+  [ngModel]="searchText$ | async"
+  (ngModelChange)="searchText$.next($event)"
 />
 
 <app-song-list
