@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { songsCollection } from '../mockData/songs';
+import { ISong } from '../shared/interface';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,7 @@ export class DataApiService {
    * @param songName
    * @returns
    */
-  public getSongsByName(songName: string) {
+  public getSongsByName(songName: string): Observable<ISong[]> {
     const songs = this.allSongs.filter((song) => song.name.includes(songName));
 
     return new Observable((observer) => {

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ISong } from 'src/app/shared/interface';
 
 @Component({
   selector: 'app-song-list',
@@ -13,22 +14,10 @@ export class SongListComponent {
   @Output()
   onSongViewDetailClicked: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() {}
-
-  /**
-   * Combine List of singers in the form of
-   * eg.
-   * [A] -> A
-   * [A,B] -> A and B
-   * [A,B,B] -> A, B and C
-   * [A,B,C,D] -> A, B , C and D
-   * [A,B,C,D,E,F] -> A, B, C, D, E and 1 Others
-   * [A,B,C,D,E,F,G] -> A, B, C, D, E and 2 Others
-   * @param valueArray
-   * @returns
-   */
-  combineSingerList(valueArray: Array<any>) {
-    return valueArray.toString();
+  constructor() { }
+  
+  trackByUri(index: number, song: ISong) {
+    return song.uri;
   }
 
   /**
