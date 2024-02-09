@@ -4,6 +4,8 @@
   (ngModelChange)="searchText$.next($event)"
 />
 
+<a [routerLink]="'song/add'" type="button">Add</a>
+
 <app-song-list
   [songLists]="songLists"
   (onSongViewDetailClicked)="showDetails($event)"

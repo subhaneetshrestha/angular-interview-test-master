@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import { Router } from '@angular/router';
 import { ISong } from 'src/app/shared/interface';
 
 @Component({
@@ -9,14 +16,14 @@ import { ISong } from 'src/app/shared/interface';
 })
 export class SongListComponent {
   @Input()
-  songLists: any = [];
+  songLists: any[] = [];
 
   @Output()
   onSongViewDetailClicked: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() { }
-  
-  trackByUri(index: number, song: ISong) {
+  constructor(private router: Router) {}
+
+  trackByUri(_: number, song: ISong) {
     return song.uri;
   }
 
@@ -25,14 +32,14 @@ export class SongListComponent {
    *
    * @param song - Selected song
    */
-  viewDetail(song: any) {
+  viewDetail(song: ISong) {
     this.onSongViewDetailClicked.emit(song.uri);
   }
 
   /**
    * Open form with the prefilled data and allow to update the content
    */
-  editSongs() {
-    // Place your logic
+  editSongs(uri: string) {
+    this.router.navigate([`song/edit/${uri}`]);
   }
 }

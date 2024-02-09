@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="form-container">
+    <form [formGroup]="songForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">*Name: </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          formControlName="name"
+          [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+        />
+        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+          <div *ngIf="f['name'].errors['required']">Name is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="type">*Type: </label>
+        <select
+          id="type"
+          name="type"
+          formControlName="type"
+          [ngClass]="{ 'is-invalid': submitted && f['type'].errors }"
+        >
+          <option value="pop">Pop</option>
+          <option value="rock">Rock</option>
+          <option value="metal">Metal</option>
+        </select>
+        <div *ngIf="submitted && f['type'].errors" class="invalid-feedback">
+          <div *ngIf="f['type'].errors['required']">Type is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="singerList">*Singer List:</label>
+        <input
+          type="text"
+          id="singerList"
+          name="singerList"
+          formControlName="singerList"
+          [ngClass]="{ 'is-invalid': submitted && f['singerList'].errors }"
+        />
+        <div
+          *ngIf="submitted && f['singerList'].errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="f['singerList'].errors['required']">
+            Singer List is required
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <app-yes-no-modal #yesNoModal></app-yes-no-modal>
+</div>
