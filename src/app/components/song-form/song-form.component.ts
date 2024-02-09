@@ -115,7 +115,7 @@ export class SongFormComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     this.submitted = true;
     if (this.songForm.invalid) return;
-    this.dataApiService[this.uri ? 'updateSong' : 'addSong']({
+    this.dataApiService[!!this.uri ? 'updateSong' : 'addSong']({
       ...this.songForm.value,
       uri: this.uri || generateRandomString(),
       singerList: this.songForm.value.singerList?.split(',').filter(Boolean),

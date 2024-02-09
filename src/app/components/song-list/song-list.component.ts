@@ -16,7 +16,7 @@ import { ISong } from 'src/app/shared/interface';
 })
 export class SongListComponent {
   @Input()
-  songLists: any[] = [];
+  songLists: ISong[] = [];
 
   @Output()
   onSongViewDetailClicked: EventEmitter<string> = new EventEmitter<string>();

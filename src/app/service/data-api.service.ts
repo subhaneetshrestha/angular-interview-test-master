@@ -32,7 +32,7 @@ export class DataApiService {
    *
    * @returns
    */
-  public fetchSongs(): Observable<any> {
+  public fetchSongs(): Observable<ISong[]> {
     return of(this.allSongs);
   }
 
@@ -68,7 +68,7 @@ export class DataApiService {
    *
    * @param newSong
    */
-  public addSong(newSong: any) {
+  public addSong(newSong: ISong) {
     if (newSong satisfies ISong) {
       this.allSongs.push(newSong);
     }
@@ -79,7 +79,7 @@ export class DataApiService {
    *
    * @param updatedSong
    */
-  public updateSong(updatedSong: any): void {
+  public updateSong(updatedSong: ISong): void {
     this.allSongs = this.allSongs.map((song) => {
       if (song.uri !== updatedSong.uri) return song;
       return updatedSong;
