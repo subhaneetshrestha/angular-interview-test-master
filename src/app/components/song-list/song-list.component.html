@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let song of (songLists | songList); trackBy: trackByUri ; let i = index;">
+    <tr *ngFor="let song of songLists; trackBy: trackByUri; let i = index">
       <td>{{ i }}</td>
       <td width="100px" [title]="song.name">
         <span class="name">
@@ -17,8 +17,11 @@
         </span>
       </td>
       <td>{{ song.type }}</td>
-      <td>{{ song.singerList }}</td>
-      <td><button (click)="viewDetail(song)">Detail</button></td>
+      <td>{{ song.singerList | arrayJoin }}</td>
+      <td>
+        <button (click)="viewDetail(song)">Detail</button>
+        <button (click)="editSongs(song.uri)">Edit</button>
+      </td>
     </tr>
   </tbody>
 </table>

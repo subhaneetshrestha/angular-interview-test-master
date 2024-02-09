@@ -1,5 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, combineLatest, debounceTime, distinctUntilChanged, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  BehaviorSubject,
+  Subject,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { DataApiService } from 'src/app/service/data-api.service';
 import { ISong } from 'src/app/shared/interface';
 
@@ -10,29 +25,38 @@ import { ISong } from 'src/app/shared/interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SongsComponent implements OnDestroy, OnInit {
-  searchText$ = new Subject<string>();
-  songLists: ISong[] = []
+  searchText$ = new BehaviorSubject<string>(
+    this.route.snapshot.queryParams['q'] ?? ''
+  );
+  songLists: ISong[] = [];
   selectedSong: ISong | undefined;
   destroy$ = new Subject<boolean>();
 
-  constructor(private dataApiService: DataApiService, private ref: ChangeDetectorRef) {}
-  
+  constructor(
+    private dataApiService: DataApiService,
+    private ref: ChangeDetectorRef,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
   ngOnInit(): void {
-    this.searchText$.pipe(
-      startWith(''),
-      distinctUntilChanged(),
-      debounceTime(500),
-      switchMap((text: string) => this.dataApiService.getSongsByName(text)),
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: (songs) => {
-        this.songLists = songs;
-        this.ref.markForCheck();
-      },
-      error: (err) => console.error(err)
-    })
+    this.searchText$
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(500),
+        tap((text) => this.router.navigate([], { queryParams: { q: text } })),
+        switchMap((text: string) => this.dataApiService.getSongsByName(text)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (songs) => {
+          this.songLists = songs;
+          this.ref.markForCheck();
+        },
+        error: (err) => console.error(err),
+      });
   }
-  
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();
@@ -44,7 +68,9 @@ export class SongsComponent implements OnDestroy, OnInit {
    * @param songId
    */
   showDetails(songId: string) {
-    this.selectedSong = this.songLists.find((song: any) => song.uri === songId);
+    this.selectedSong = this.songLists.find(
+      (song: ISong) => song.uri === songId
+    );
     this.ref.markForCheck();
   }
 
@@ -54,7 +80,9 @@ export class SongsComponent implements OnDestroy, OnInit {
   changeSongToMetal() {
     if (!this.selectedSong) return;
     this.selectedSong = Object.assign(this.selectedSong, { type: 'metal' });
-    this.songLists = this.songLists.map((song) => song.uri === this.selectedSong?.uri ? this.selectedSong : song);
+    this.songLists = this.songLists.map((song) =>
+      song.uri === this.selectedSong?.uri ? this.selectedSong : song
+    );
     this.ref.markForCheck();
 
     // FIXME Weird behavior, type get updated in the songs list but it is not reflected in the table
