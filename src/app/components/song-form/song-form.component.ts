@@ -121,7 +121,7 @@ export class SongFormComponent implements OnInit, OnDestroy {
       singerList: this.songForm.value.singerList?.split(',').filter(Boolean),
     });
     localStorage.clear();
-    this.router.navigate(['']);
     this.ref.markForCheck();
+    this.router.navigate(['']);
   }
 }
