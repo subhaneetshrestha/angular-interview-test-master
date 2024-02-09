@@ -19,8 +19,10 @@
       <td>{{ song.type }}</td>
       <td>{{ song.singerList | arrayJoin }}</td>
       <td>
-        <button (click)="viewDetail(song)">Detail</button>
-        <button (click)="editSongs(song.uri)">Edit</button>
+        <div class="btn-group">
+          <button (click)="viewDetail(song)">Detail</button>
+          <button (click)="editSongs(song.uri)">Edit</button>
+        </div>
       </td>
     </tr>
   </tbody>
