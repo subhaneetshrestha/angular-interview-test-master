@@ -1,10 +1,12 @@
-<input
-  placeholder="Search Songs"
-  [ngModel]="searchText$ | async"
-  (ngModelChange)="searchText$.next($event)"
-/>
+<div class="searchbox">
+  <input
+    placeholder="Search Songs"
+    [ngModel]="searchText$ | async"
+    (ngModelChange)="searchText$.next($event)"
+  />
 
-<a [routerLink]="'song/add'" type="button">Add</a>
+  <a [routerLink]="'song/add'" type="button">Add</a>
+</div>
 
 <app-song-list
   [songLists]="songLists"

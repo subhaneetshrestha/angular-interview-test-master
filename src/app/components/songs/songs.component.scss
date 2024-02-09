@@ -9,3 +9,16 @@
     overflow: hidden;
   }
 }
+
+.searchbox {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
